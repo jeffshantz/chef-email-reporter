@@ -1,0 +1,238 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Chef-email-reporter by jeffshantz</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Chef-email-reporter</h1>
+        <p>Sends chef-client errors via email.  More detailed than a simple chef_handler.</p>
+
+        <p class="view"><a href="https://github.com/jeffshantz/chef-email-reporter">View the Project on GitHub <small>jeffshantz/chef-email-reporter</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/jeffshantz/chef-email-reporter/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/jeffshantz/chef-email-reporter/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/jeffshantz/chef-email-reporter">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="chef-email-reporter" class="anchor" href="#chef-email-reporter"><span class="octicon octicon-link"></span></a>chef-email-reporter</h1>
+
+<p>This gem extends the Chef client, allowing notifications to be sent via email
+to a pre-determined address when a chef-client run fails on a node.  This gives
+administrators the confidence that errors on Chef nodes won't go unnoticed.</p>
+
+<p>While it is possible to do this with a simple handler (see
+<a href="http://docs.getchef.com/handlers.html">http://docs.getchef.com/handlers.html</a>), one typically only receives the text of
+the exception with a handler.  <code>chef-email-reporter</code> provides information
+identical to what one would receive when running chef-client at the terminal:
+the exception, the resource declaration, and the compiled resource.  See below
+for a sample email sent by <code>chef-email-reporter</code>.</p>
+
+<p>insert image here.</p>
+
+<p>Having this additional information can ease troubleshooting for administrators.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Install the <code>chef-email-reporter</code> gem on the node:</p>
+
+<pre><code>/opt/chef/embedded/bin/gem install chef-email-reporter
+</code></pre>
+
+<p>Add something like the following to your <code>/etc/chef/client.rb</code> file (see the
+<strong>Usage</strong> section below for more details):</p>
+
+<pre><code>gem     "chef-email-reporter"
+require "chef-email-reporter"
+
+Mail.defaults do
+  delivery_method :smtp, address: 'smtp.example.com'
+end
+
+email_sender    "no.reply@example.com"
+email_recipient "chef-notifications@example.com"
+</code></pre>
+
+<p>Profit.</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Assuming you have already installed <code>chef-email-reporter</code> on your node, you must
+activate it by adding the following to your <code>/etc/chef/client.rb</code> file:</p>
+
+<pre><code>gem     "chef-email-reporter"
+require "chef-email-reporter"
+</code></pre>
+
+<p>You should also specify the sender and recipient email addresses for
+notifications sent by <code>chef-email-reporter</code>:</p>
+
+<pre><code>email_sender    "no.reply@example.com"
+email_recipient "chef-notifications@example.com"
+</code></pre>
+
+<p>Finally, depending on how you want your mail delivered, you may need to specify
+some settings for <code>Mail.defaults</code>.  See the examples below for an idea of what
+is possible.</p>
+
+<h3>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
+
+<p><code>chef-email-reporter</code> uses the <code>mail</code> gem to deliver email, so any delivery
+methods supported by <code>mail</code> are supported.  For full details, see the 
+documentation at <a href="https://github.com/mikel/mail">https://github.com/mikel/mail</a>.  Since the documentation is
+lacking slightly, you are advised to have a look in the comments in the files at
+<a href="https://github.com/mikel/mail/tree/master/lib/mail/network/delivery_methods">https://github.com/mikel/mail/tree/master/lib/mail/network/delivery_methods</a>.</p>
+
+<h4>
+<a name="sending-email-via-smtp" class="anchor" href="#sending-email-via-smtp"><span class="octicon octicon-link"></span></a>Sending email via SMTP</h4>
+
+<p>Add the following to <code>/etc/chef/client.rb</code>:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span>     <span class="s2">"chef-email-reporter"</span>
+<span class="nb">require</span> <span class="s2">"chef-email-reporter"</span>
+
+<span class="no">Mail</span><span class="o">.</span><span class="n">defaults</span> <span class="k">do</span>
+  <span class="n">delivery_method</span> <span class="ss">:smtp</span><span class="p">,</span> <span class="p">{</span>
+    <span class="ss">:address</span>              <span class="o">=&gt;</span> <span class="s2">"smtp.example.com"</span><span class="p">,</span>
+    <span class="ss">:port</span>                 <span class="o">=&gt;</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="ss">:domain</span>               <span class="o">=&gt;</span> <span class="s2">"example.com"</span><span class="p">,</span>
+    <span class="ss">:user_name</span>            <span class="o">=&gt;</span> <span class="s2">"jeff"</span><span class="p">,</span>
+    <span class="ss">:password</span>             <span class="o">=&gt;</span> <span class="s2">"secret"</span><span class="p">,</span>
+    <span class="ss">:authentication</span>       <span class="o">=&gt;</span> <span class="s2">"plain"</span><span class="p">,</span>
+    <span class="ss">:enable_starttls_auto</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+  <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">email_sender</span>    <span class="s2">"no.reply@example.com"</span>
+<span class="n">email_recipient</span> <span class="s2">"chef-notifications@example.com"</span>
+</pre></div>
+
+<p>Examples for sending email via Gmail and Amazon SES are provided in the wiki
+for the <code>mail</code> gem:</p>
+
+<ul>
+<li>Gmail: <a href="https://github.com/mikel/mail/wiki/Sending-email-via-Gmail-SMTP">https://github.com/mikel/mail/wiki/Sending-email-via-Gmail-SMTP</a>
+</li>
+<li>Amazon SES: <a href="https://github.com/mikel/mail/wiki/Sending-email-via-Amazon-SES">https://github.com/mikel/mail/wiki/Sending-email-via-Amazon-SES</a>
+</li>
+</ul><h4>
+<a name="sending-email-via-sendmail" class="anchor" href="#sending-email-via-sendmail"><span class="octicon octicon-link"></span></a>Sending email via <code>sendmail</code>
+</h4>
+
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span>     <span class="s2">"chef-email-reporter"</span>
+<span class="nb">require</span> <span class="s2">"chef-email-reporter"</span>
+
+<span class="no">Mail</span><span class="o">.</span><span class="n">defaults</span> <span class="k">do</span>
+  <span class="n">delivery_method</span> <span class="ss">:sendmail</span>
+<span class="k">end</span>
+
+<span class="n">email_sender</span>    <span class="s2">"no.reply@example.com"</span>
+<span class="n">email_recipient</span> <span class="s2">"chef-notifications@example.com"</span>
+</pre></div>
+
+<p>If your <code>sendmail</code> binary is not located at <code>/usr/sbin/sendmail</code>, you can
+specify its location as an argument:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Mail</span><span class="o">.</span><span class="n">defaults</span> <span class="k">do</span>
+  <span class="n">delivery_method</span> <span class="ss">:sendmail</span><span class="p">,</span> <span class="ss">:location</span> <span class="o">=&gt;</span> <span class="s1">'/absolute/path/to/your/sendmail'</span>
+<span class="k">end</span>
+</pre></div>
+
+<h4>
+<a name="sending-email-via-exim" class="anchor" href="#sending-email-via-exim"><span class="octicon octicon-link"></span></a>Sending email via <code>exim</code>
+</h4>
+
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span>     <span class="s2">"chef-email-reporter"</span>
+<span class="nb">require</span> <span class="s2">"chef-email-reporter"</span>
+
+<span class="no">Mail</span><span class="o">.</span><span class="n">defaults</span> <span class="k">do</span>
+  <span class="n">delivery_method</span> <span class="ss">:exim</span>
+<span class="k">end</span>
+
+<span class="n">email_sender</span> <span class="s1">'no.reply@example.com'</span>
+<span class="n">email_recipient</span> <span class="s1">'chef-notifications@example.com'</span>
+</pre></div>
+
+<p>If your <code>exim</code> binary is not located at <code>/usr/sbin/exim</code>, you can specify its
+location as an argument:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Mail</span><span class="o">.</span><span class="n">defaults</span> <span class="k">do</span>
+  <span class="n">delivery_method</span> <span class="ss">:exim</span><span class="p">,</span> <span class="ss">:location</span> <span class="o">=&gt;</span> <span class="s1">'/absolute/path/to/your/exim'</span>
+<span class="k">end</span>
+</pre></div>
+
+<h2>
+<a name="integrating-the-gem-into-your-workflow" class="anchor" href="#integrating-the-gem-into-your-workflow"><span class="octicon octicon-link"></span></a>Integrating the gem into your workflow</h2>
+
+<p>One might wonder how to integrate into one's workflow.  While the method of
+integration will vary from deployment to deployment, I will briefly discuss how
+I've integrated it into mine.</p>
+
+<p>In my organization, I've configured bare-metal deployment via Razor Server
+(<a href="https://github.com/puppetlabs/razor-server">https://github.com/puppetlabs/razor-server</a>).  After Razor deploys the operating
+system, it runs a script on the node which:</p>
+
+<ul>
+<li>Installs Chef</li>
+<li>Installs the <code>chef-email-reporter</code> gem</li>
+<li>Writes a basic <code>/etc/chef/config.rb</code>
+</li>
+<li>Runs <code>chef-client</code> to register and configure the node</li>
+</ul><p>Of course, you don't need to be running Razor Server to use this gem.  Simply
+have whichever bare-metal deployment solution you're running install the gem and
+configure <code>/etc/chef/config.rb</code>.  If you're not running a bare-metal deployment
+solution, then you'll simply have to perform these steps manually.</p>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ol>
+<li>Fork it (<a href="https://github.com/jeffshantz/chef-email-reporter/fork">https://github.com/jeffshantz/chef-email-reporter/fork</a>)</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create a new Pull Request</li>
+</ol><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<pre><code>Copyright 2014, Jeff Shantz
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/jeffshantz">jeffshantz</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
