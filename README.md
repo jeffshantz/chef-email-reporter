@@ -11,7 +11,7 @@ identical to what one would receive when running chef-client at the terminal:
 the exception, the resource declaration, and the compiled resource.  See below
 for a sample email sent by `chef-email-reporter`.
 
-insert image here.
+![email screenshot](http://jeffshantz.github.io/chef-email-reporter/screenshots/screenshot-html.png)
 
 Having this additional information can ease troubleshooting for administrators.
 
@@ -158,12 +158,12 @@ system, it runs a script on the node which:
 
 * Installs Chef
 * Installs the `chef-email-reporter` gem
-* Writes a basic `/etc/chef/config.rb`
+* Writes a basic `/etc/chef/client.rb`
 * Runs `chef-client` to register and configure the node
 
 Of course, you don't need to be running Razor Server to use this gem.  Simply
 have whichever bare-metal deployment solution you're running install the gem and
-configure `/etc/chef/config.rb`.  If you're not running a bare-metal deployment
+configure `/etc/chef/client.rb`.  If you're not running a bare-metal deployment
 solution, then you'll simply have to perform these steps manually.
 
 ## Contributing
