@@ -32,17 +32,18 @@
 <a name="chef-email-reporter" class="anchor" href="#chef-email-reporter"><span class="octicon octicon-link"></span></a>chef-email-reporter</h1>
 
 <p>This gem extends the Chef client, allowing notifications to be sent via email
-to a pre-determined address when a chef-client run fails on a node.  This gives
-administrators the confidence that errors on Chef nodes won't go unnoticed.</p>
+to a pre-determined address when a <code>chef-client</code> run fails on a node.  This
+gives administrators the confidence that errors on Chef nodes won't go
+unnoticed.</p>
 
 <p>While it is possible to do this with a simple handler (see
 <a href="http://docs.getchef.com/handlers.html">http://docs.getchef.com/handlers.html</a>), one typically only receives the text of
 the exception with a handler.  <code>chef-email-reporter</code> provides information
-identical to what one would receive when running chef-client at the terminal:
+identical to what one would receive when running <code>chef-client</code> at the terminal:
 the exception, the resource declaration, and the compiled resource.  See below
 for a sample email sent by <code>chef-email-reporter</code>.</p>
 
-<p>insert image here.</p>
+<p><img src="http://jeffshantz.github.io/chef-email-reporter/screenshots/screenshot-html.png" alt="email screenshot"></p>
 
 <p>Having this additional information can ease troubleshooting for administrators.</p>
 
@@ -57,16 +58,16 @@ for a sample email sent by <code>chef-email-reporter</code>.</p>
 <p>Add something like the following to your <code>/etc/chef/client.rb</code> file (see the
 <strong>Usage</strong> section below for more details):</p>
 
-<pre><code>gem     "chef-email-reporter"
-require "chef-email-reporter"
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span>     <span class="s2">"chef-email-reporter"</span>
+<span class="nb">require</span> <span class="s2">"chef-email-reporter"</span>
 
-Mail.defaults do
-  delivery_method :smtp, address: 'smtp.example.com'
-end
+<span class="no">Mail</span><span class="o">.</span><span class="n">defaults</span> <span class="k">do</span>
+  <span class="n">delivery_method</span> <span class="ss">:smtp</span><span class="p">,</span> <span class="ss">address</span><span class="p">:</span> <span class="s1">'smtp.example.com'</span>
+<span class="k">end</span>
 
-email_sender    "no.reply@example.com"
-email_recipient "chef-notifications@example.com"
-</code></pre>
+<span class="n">email_sender</span>    <span class="s2">"no.reply@example.com"</span>
+<span class="n">email_recipient</span> <span class="s2">"chef-notifications@example.com"</span>
+</pre></div>
 
 <p>Profit.</p>
 
@@ -76,16 +77,16 @@ email_recipient "chef-notifications@example.com"
 <p>Assuming you have already installed <code>chef-email-reporter</code> on your node, you must
 activate it by adding the following to your <code>/etc/chef/client.rb</code> file:</p>
 
-<pre><code>gem     "chef-email-reporter"
-require "chef-email-reporter"
-</code></pre>
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span>     <span class="s2">"chef-email-reporter"</span>
+<span class="nb">require</span> <span class="s2">"chef-email-reporter"</span>
+</pre></div>
 
 <p>You should also specify the sender and recipient email addresses for
 notifications sent by <code>chef-email-reporter</code>:</p>
 
-<pre><code>email_sender    "no.reply@example.com"
-email_recipient "chef-notifications@example.com"
-</code></pre>
+<div class="highlight highlight-ruby"><pre><span class="n">email_sender</span>    <span class="s2">"no.reply@example.com"</span>
+<span class="n">email_recipient</span> <span class="s2">"chef-notifications@example.com"</span>
+</pre></div>
 
 <p>Finally, depending on how you want your mail delivered, you may need to specify
 some settings for <code>Mail.defaults</code>.  See the examples below for an idea of what
@@ -166,8 +167,8 @@ specify its location as an argument:</p>
   <span class="n">delivery_method</span> <span class="ss">:exim</span>
 <span class="k">end</span>
 
-<span class="n">email_sender</span> <span class="s1">'no.reply@example.com'</span>
-<span class="n">email_recipient</span> <span class="s1">'chef-notifications@example.com'</span>
+<span class="n">email_sender</span>    <span class="s2">"no.reply@example.com"</span>
+<span class="n">email_recipient</span> <span class="s2">"chef-notifications@example.com"</span>
 </pre></div>
 
 <p>If your <code>exim</code> binary is not located at <code>/usr/sbin/exim</code>, you can specify its
@@ -192,12 +193,12 @@ system, it runs a script on the node which:</p>
 <ul>
 <li>Installs Chef</li>
 <li>Installs the <code>chef-email-reporter</code> gem</li>
-<li>Writes a basic <code>/etc/chef/config.rb</code>
+<li>Writes a basic <code>/etc/chef/client.rb</code>
 </li>
 <li>Runs <code>chef-client</code> to register and configure the node</li>
 </ul><p>Of course, you don't need to be running Razor Server to use this gem.  Simply
 have whichever bare-metal deployment solution you're running install the gem and
-configure <code>/etc/chef/config.rb</code>.  If you're not running a bare-metal deployment
+configure <code>/etc/chef/client.rb</code>.  If you're not running a bare-metal deployment
 solution, then you'll simply have to perform these steps manually.</p>
 
 <h2>
