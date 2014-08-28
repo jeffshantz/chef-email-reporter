@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email            = ["jeff@csd.uwo.ca"]
   spec.summary          = %q{Sends chef-client errors via email.}
   spec.description      = %q{Sends chef-client errors via email.  More detailed than a simple chef_handler.}
-  spec.homepage         = ""
+  spec.homepage         = "http://jeffshantz.github.io/chef-email-reporter"
   spec.license          = "Apache 2.0"
 
   spec.files            = `git ls-files -z`.split("\x0")
