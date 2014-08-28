@@ -1,0 +1,71 @@
+<%#
+  # Copyright 2014, Jeff Shantz
+  # 
+  # Licensed under the Apache License, Version 2.0 (the "License");
+  # you may not use this file except in compliance with the License.
+  # You may obtain a copy of the License at
+  # 
+  #     http://www.apache.org/licenses/LICENSE-2.0
+  # 
+  # Unless required by applicable law or agreed to in writing, software
+  # distributed under the License is distributed on an "AS IS" BASIS,
+  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  # See the License for the specific language governing permissions and
+  # limitations under the License.
+%>
+<html>
+  <head>
+    <style>
+      @import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono:400|Droid+Sans:400,700);
+      h1 {
+        font-family: 'Droid Sans', sans-serif;
+        color: #444;
+        font-size: 24px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid black;
+        margin-bottom: 5px;
+      }
+
+      h2 {
+        font-family: 'Droid Sans', sans-serif;
+        color: #444;
+        font-size: 18px;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+      }
+
+      pre {
+        background: #001e27;
+        color: #708284;
+      }
+
+      pre code {
+        font-family: 'Droid Sans Mono', monospace;
+      }
+
+      tr td:first-child {
+        text-align: right
+      }
+
+      tr td:nth-child(2) {
+        padding-left: 5px;
+      }
+    </style>
+    <body>
+      <h1>An error occurred during a chef-client run.</h1>
+      <h2>Metadata</h2>
+      <table>
+        <tr>
+          <td>Hostname:</td>
+          <td><%= node_fqdn %></td>
+        </tr>
+        <tr>
+          <td>Run Start:</td>
+          <td><%= start_time %></td>
+        </tr>
+      </table>
+      <h2>Error</h2>
+      <pre><code><%= error %></code></pre>
+    </body>
+  </head>
+</html>
