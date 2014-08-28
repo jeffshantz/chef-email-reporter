@@ -1,13 +1,14 @@
 # chef-email-reporter
 
 This gem extends the Chef client, allowing notifications to be sent via email
-to a pre-determined address when a chef-client run fails on a node.  This gives
-administrators the confidence that errors on Chef nodes won't go unnoticed.
+to a pre-determined address when a `chef-client` run fails on a node.  This
+gives administrators the confidence that errors on Chef nodes won't go
+unnoticed.
 
 While it is possible to do this with a simple handler (see
 http://docs.getchef.com/handlers.html), one typically only receives the text of
 the exception with a handler.  `chef-email-reporter` provides information
-identical to what one would receive when running chef-client at the terminal:
+identical to what one would receive when running `chef-client` at the terminal:
 the exception, the resource declaration, and the compiled resource.  See below
 for a sample email sent by `chef-email-reporter`.
 
@@ -133,8 +134,8 @@ Mail.defaults do
   delivery_method :exim
 end
 
-email_sender 'no.reply@example.com'
-email_recipient 'chef-notifications@example.com'
+email_sender    "no.reply@example.com"
+email_recipient "chef-notifications@example.com"
 ```
 
 If your `exim` binary is not located at `/usr/sbin/exim`, you can specify its
