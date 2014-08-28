@@ -26,7 +26,7 @@ Install the `chef-email-reporter` gem on the node:
 Add something like the following to your `/etc/chef/client.rb` file (see the
 **Usage** section below for more details):
 
-```
+```ruby
 gem     "chef-email-reporter"
 require "chef-email-reporter"
 
@@ -45,7 +45,7 @@ Profit.
 Assuming you have already installed `chef-email-reporter` on your node, you must
 activate it by adding the following to your `/etc/chef/client.rb` file:
 
-```
+```ruby
 gem     "chef-email-reporter"
 require "chef-email-reporter"
 ```
@@ -53,7 +53,7 @@ require "chef-email-reporter"
 You should also specify the sender and recipient email addresses for
 notifications sent by `chef-email-reporter`:
 
-```
+```ruby
 email_sender    "no.reply@example.com"
 email_recipient "chef-notifications@example.com"
 ```
