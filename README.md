@@ -1,5 +1,7 @@
 # chef-email-reporter
 
+[![Gem Version](https://badge.fury.io/rb/chef-email-reporter.png)](http://badge.fury.io/rb/chef-email-reporter)
+
 This gem extends the Chef client, allowing notifications to be sent via email
 to a pre-determined address when a `chef-client` run fails on a node.  This
 gives administrators the confidence that errors on Chef nodes won't go
